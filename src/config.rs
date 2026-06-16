@@ -16,7 +16,7 @@ use crate::tab::{HeadingOptions, Location, View};
 
 pub use crate::context_action::{ContextActionPreset, ContextActionSelection};
 
-pub const CONFIG_VERSION: u64 = 1;
+pub const CONFIG_VERSION: u64 = 2;
 
 // Default icon sizes
 pub const ICON_SIZE_LIST: u16 = 32;
@@ -164,6 +164,7 @@ pub struct Config {
     pub app_theme: AppTheme,
     pub dialog: DialogConfig,
     pub desktop: DesktopConfig,
+    pub window: WindowConfig,
     pub context_actions: Vec<ContextActionPreset>,
     pub thumb_cfg: ThumbCfg,
     pub favorites: Vec<Favorite>,
@@ -220,6 +221,7 @@ impl Default for Config {
         Self {
             app_theme: AppTheme::System,
             desktop: DesktopConfig::default(),
+            window: WindowConfig::default(),
             dialog: DialogConfig::default(),
             context_actions: Vec::new(),
             thumb_cfg: ThumbCfg::default(),
@@ -264,6 +266,22 @@ impl Default for DesktopConfig {
 impl DesktopConfig {
     pub fn grid_spacing_for(&self, space: u16) -> u16 {
         percent!(self.grid_spacing, space) as _
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, CosmicConfigEntry, Deserialize, Serialize)]
+#[serde(default)]
+pub struct WindowConfig {
+    pub width: NonZeroU16,
+    pub height: NonZeroU16,
+}
+
+impl Default for WindowConfig {
+    fn default() -> Self {
+        Self {
+            width: 1024.try_into().unwrap(),
+            height: 768.try_into().unwrap(),
+        }
     }
 }
 

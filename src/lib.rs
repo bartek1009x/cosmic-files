@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 use cosmic::app::Settings;
-use cosmic::iced::Limits;
+use cosmic::iced::{self, Limits};
 use std::path::PathBuf;
 use std::{env, fs, process};
 use tracing_subscriber::layer::SubscriberExt;
@@ -103,8 +103,10 @@ pub fn desktop() -> Result<(), Box<dyn std::error::Error>> {
     let mut settings = Settings::default();
     settings = settings.theme(config.app_theme.theme());
     settings = settings.size_limits(Limits::NONE.min_width(360.0).min_height(180.0));
+    settings = settings.size(iced::Size::new(config.window.width.get() as f32, config.window.height.get() as f32));
     settings = settings.exit_on_close(false);
     settings = settings.transparent(true);
+
     #[cfg(all(feature = "wayland", feature = "desktop-applet"))]
     {
         settings = settings.no_main_window(true);
@@ -120,6 +122,7 @@ pub fn desktop() -> Result<(), Box<dyn std::error::Error>> {
         locations,
         uris: Vec::new()
     };
+
     cosmic::app::run::<App>(settings, flags)?;
 
     Ok(())
@@ -206,6 +209,7 @@ pub fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut settings = Settings::default();
     settings = settings.theme(config.app_theme.theme());
     settings = settings.size_limits(Limits::NONE.min_width(360.0).min_height(180.0));
+    settings = settings.size(iced::Size::new(config.window.width.get() as f32, config.window.height.get() as f32));
     settings = settings.exit_on_close(false);
 
     #[cfg(feature = "jemalloc")]
