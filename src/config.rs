@@ -16,7 +16,7 @@ use crate::tab::{HeadingOptions, Location, View};
 
 pub use crate::context_action::{ContextActionPreset, ContextActionSelection};
 
-pub const CONFIG_VERSION: u64 = 2;
+pub const CONFIG_VERSION: u64 = 1;
 
 // Default icon sizes
 pub const ICON_SIZE_LIST: u16 = 32;

@@ -5318,8 +5318,6 @@ impl Application for App {
                 _ => {}
             },
             Message::Size(window_id, size) => {
-                println!("{}", size.width);
-                println!("{}", size.height);
                 if self.core.main_window_id() == Some(window_id) {
                     self.size = Some(size);
                 } else {
@@ -6619,9 +6617,7 @@ impl Application for App {
                 Event::Window(WindowEvent::Opened { position: _, size }) => {
                     Some(Message::Size(window_id, size))
                 }
-                Event::Window(WindowEvent::Resized(s)) => {
-                    Some(Message::Size(window_id, s))
-                }
+                Event::Window(WindowEvent::Resized(s)) => Some(Message::Size(window_id, s)),
                 #[cfg(all(feature = "wayland", feature = "desktop-applet"))]
                 Event::PlatformSpecific(event::PlatformSpecific::Wayland(wayland_event)) => {
                     match wayland_event {
